@@ -1,13 +1,27 @@
 
 <template>
-  <span class="tile">
+  <span class="tile" :style="{width: size, height: size, left, top}">
+    {{value}}
   </span>
 </template>
 
 <script>
+import { TILE_SIZE } from '../constants';
 
 export default {
   name: 'Tile',
+  props: {
+    x: Number,
+    y: Number,
+    value: String,
+  },
+  data() {
+    return {
+      size: `${TILE_SIZE}px`,
+      top: `${this.y * TILE_SIZE}px`,
+      left: `${this.x * TILE_SIZE}px`,
+    }
+  },
 }
 
 </script>
