@@ -1,13 +1,17 @@
 <template>
   <div id="app">
-    <h1>Let's build a VueJS Tic Tac Toe</h1>
+    <Board />
   </div>
 </template>
 
 <script>
+import Board from './components/Board.vue';
 
 export default {
   name: 'app',
+  components: {
+    Board,
+  }
 }
 </script>
 
