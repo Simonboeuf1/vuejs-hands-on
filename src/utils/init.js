@@ -1,6 +1,8 @@
-import {BOARD_SIZE} from "../constants";
+import {Players, BOARD_SIZE} from "../constants";
 
-const initTile = (x, y) => ({x, y, value: ''});
+export const initPlayer = () => Players.Player1;
+
+export const initTile = (x, y) => ({x, y, value: ''});
 
 export const initTiles = () => {
   const indexes = Array(BOARD_SIZE).fill(null);
