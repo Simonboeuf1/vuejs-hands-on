@@ -1,7 +1,7 @@
 
 <template>
   <div class="game">
-    <div class="board">
+    <div class="board" :style="{width, height}">
     </div>
   </div>
 </template>
