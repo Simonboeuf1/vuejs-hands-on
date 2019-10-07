@@ -1,6 +1,10 @@
 
 <template>
-  <span class="tile" :style="{width: size, height: size, left, top}">
+  <span
+    class="tile"
+    :style="{width: size, height: size, fontSize: size, left, top,}"
+     @click="handleClick"
+  >
     {{value}}
   </span>
 </template>
@@ -27,6 +31,11 @@ export default {
     left() {
       return `${this.x * TILE_SIZE}px`;
     },
+  },
+  methods: {
+    handleClick() {
+      this.$emit("tileClick", {x: this.x, y: this.y, value: this.value});
+    }
   }
 }
 

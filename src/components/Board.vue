@@ -1,6 +1,7 @@
 
 <template>
   <div class="game">
+    <h1>Current Player: {{playerMarker}}</h1>
     <div class="board" :style="{width: size, height: size}">
       <Tile
         v-for="tile in tiles"
@@ -8,15 +9,18 @@
         :x="tile.x"
         :y="tile.y"
         :value="tile.value"
+        @tileClick="play"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { initTiles } from '../utils/init';
+import { initTiles, initPlayer } from '../utils/init';
 import Tile from './Tile.vue';
 import { TILE_SIZE, BOARD_SIZE } from '../constants';
+import { getMarker, isTileEmpty } from '../utils/board.js';
+import { markTile, getNextPlayer } from '../utils/game.js';
 
 export default {
   name: 'Board',
@@ -27,11 +31,23 @@ export default {
     return {
       tiles: initTiles(),
       size: `${TILE_SIZE * BOARD_SIZE}px`,
+      currentPlayer: initPlayer(),
+    }
+  },
+  computed: {
+    playerMarker() {
+      return getMarker(this.currentPlayer);
     }
   },
   methods: {
     tileKey({x, y}) {
       return `x${x}y${y}`;
+    },
+    play(tile) {
+      if(isTileEmpty(tile)) {
+        this.tiles = markTile(this.tiles, tile, this.currentPlayer);
+        this.currentPlayer = getNextPlayer(this.currentPlayer);
+      }
     }
   }
 }
