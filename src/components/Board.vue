@@ -12,6 +12,10 @@
         @tileClick="play"
       />
     </div>
+    <template v-if="isFinished">
+      <h2>{{ finishedText }}</h2>
+      <button @click="newGame">New game</button>
+    </template>
   </div>
 </template>
 
@@ -19,7 +23,7 @@
 import { initTiles, initPlayer } from '../utils/init';
 import Tile from './Tile.vue';
 import { TILE_SIZE, BOARD_SIZE } from '../constants';
-import { getMarker, isTileEmpty } from '../utils/board.js';
+import { getMarker, isTileEmpty, isGameFinished, hasWinner } from '../utils/board.js';
 import { markTile, getNextPlayer } from '../utils/game.js';
 
 export default {
@@ -37,7 +41,13 @@ export default {
   computed: {
     playerMarker() {
       return getMarker(this.currentPlayer);
-    }
+    },
+    isFinished() {
+      return isGameFinished(this.tiles);
+    },
+    finishedText() {
+      return hasWinner(this.tiles) ? `Player ${this.currentPlayer} won!` : 'Game drawn.'
+    },
   },
   methods: {
     tileKey({x, y}) {
@@ -46,8 +56,14 @@ export default {
     play(tile) {
       if(isTileEmpty(tile)) {
         this.tiles = markTile(this.tiles, tile, this.currentPlayer);
-        this.currentPlayer = getNextPlayer(this.currentPlayer);
+        if(!this.isFinished) {
+          this.currentPlayer = getNextPlayer(this.currentPlayer);
+        }
       }
+    },
+    newGame() {
+      this.tiles = initTiles(),
+      this.currentPlayer = initPlayer();
     }
   }
 }
